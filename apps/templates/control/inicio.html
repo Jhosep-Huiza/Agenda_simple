@@ -1,0 +1,32 @@
+{% extends 'control/base.html' %}
+
+{% block content %}
+
+<section class="portada">
+
+    <h1>{% now "l j \d\e F" %}</h1>
+
+    <p>
+        Hola, {{ user.first_name|default:user.username }}.
+        Aquí puedes gestionar tus clientes y sus citas.
+    </p>
+
+</section>
+
+<section class="atajos">
+
+    <a class="atajo" href="{% url 'clientes' %}">
+        <h2>Clientes</h2>
+        <span class="total">{{ total_clientes }}</span>
+        <span class="accion">Ver clientes</span>
+    </a>
+
+    <a class="atajo" href="{% url 'citas' %}">
+        <h2>Citas</h2>
+        <span class="total">{{ total_citas }}</span>
+        <span class="accion">Ver citas</span>
+    </a>
+
+</section>
+
+{% endblock %}

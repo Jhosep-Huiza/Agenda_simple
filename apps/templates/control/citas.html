@@ -1,0 +1,282 @@
+{% extends 'control/base.html' %}
+
+{% block content %}
+
+<h1 class="titulo">Citas</h1>
+<p class="subtitulo">Agenda reuniones presenciales o virtuales con tus clientes.</p>
+
+<div class="division">
+
+<!-- REGISTRAR O EDITAR CITA -->
+<section class="tarjeta formulario">
+
+    <h2>
+        {% if editar %}
+            Editar cita
+        {% else %}
+            Agendar cita
+        {% endif %}
+    </h2>
+
+    <form method="post"
+          action="{% url 'guardar_cita' %}"
+          class="rejilla">
+
+        {% csrf_token %}
+
+        {% if editar %}
+            <input type="hidden"
+                   name="id_cita"
+                   value="{{ editar.id_cita }}">
+        {% endif %}
+
+        <!-- CLIENTE -->
+        <div class="campo ancho">
+            <label for="id_cliente">Cliente</label>
+
+            <select name="id_cliente" id="id_cliente" required>
+
+                <option value="">Selecciona un cliente</option>
+
+                {% for cliente in clientes %}
+
+                    <option value="{{ cliente.id_cliente }}"
+                        {% if editar.cliente_id == cliente.id_cliente %}
+                            selected
+                        {% endif %}>
+
+                        {{ cliente.nombre }}
+                        {{ cliente.apellido }}
+
+                    </option>
+
+                {% endfor %}
+
+            </select>
+        </div>
+
+        <!-- FECHA Y HORA -->
+        <div class="campo ancho">
+            <label for="id_fecha_hora">Fecha y hora</label>
+
+            <input type="datetime-local"
+                   id="id_fecha_hora"
+                   name="fecha_hora"
+                   value="{% if editar %}{{ editar.fecha_hora|date:'Y-m-d' }}T{{ editar.fecha_hora|date:'H:i' }}{% endif %}"
+                   required>
+        </div>
+
+        <!-- MOTIVO -->
+        <div class="campo ancho">
+            <label for="id_motivo">Motivo de la cita</label>
+
+            <input type="text"
+                   id="id_motivo"
+                   name="motivo"
+                   maxlength="200"
+                   value="{{ editar.motivo|default:'' }}"
+                   required>
+        </div>
+
+        <!-- TIPO DE REUNIÓN -->
+        <div class="campo ancho">
+            <label for="id_tipo_reunion">Tipo de reunión</label>
+
+            <select name="tipo_reunion"
+                    id="id_tipo_reunion"
+                    required>
+
+                <option value="">Selecciona el tipo</option>
+
+                <option value="Virtual"
+                    {% if editar.tipo_reunion == 'Virtual' %}
+                        selected
+                    {% endif %}>
+                    Virtual
+                </option>
+
+                <option value="Presencial"
+                    {% if editar.tipo_reunion == 'Presencial' %}
+                        selected
+                    {% endif %}>
+                    Presencial
+                </option>
+
+            </select>
+        </div>
+
+        <!-- DIRECCIÓN -->
+        <div class="campo ancho">
+            <label for="id_direccion">Dirección</label>
+
+            <input type="text"
+                   id="id_direccion"
+                   name="direccion"
+                   maxlength="200"
+                   value="{{ editar.direccion|default:'' }}">
+        </div>
+
+        <!-- REFERENCIA -->
+        <div class="campo ancho">
+            <label for="id_referencia">Referencia</label>
+
+            <input type="text"
+                   id="id_referencia"
+                   name="referencia"
+                   maxlength="200"
+                   value="{{ editar.referencia|default:'' }}">
+        </div>
+
+        <!-- ENLACE VIRTUAL -->
+        <div class="campo ancho">
+            <label for="id_enlace_virtual">Enlace de la reunión virtual</label>
+
+            <input type="url"
+                   id="id_enlace_virtual"
+                   name="enlace_virtual"
+                   value="{{ editar.enlace_virtual|default:'' }}"
+                   placeholder="https://meet.google.com/...">
+        </div>
+
+        <div class="botones">
+
+            <button type="submit" class="guardar">
+                {% if editar %}
+                    Actualizar cita
+                {% else %}
+                    Guardar cita
+                {% endif %}
+            </button>
+
+            <a href="{% url 'citas' %}"
+               class="boton limpiar">
+                Limpiar
+            </a>
+
+        </div>
+
+    </form>
+
+</section>
+
+
+<!-- LISTA DE CITAS -->
+<section class="tarjeta">
+
+    <div class="cabecera-lista">
+        <h2>Lista de citas</h2>
+        <span class="cantidad">{{ citas|length }} en total</span>
+    </div>
+
+    <form method="get" class="buscar">
+
+        <input type="search"
+               name="buscar"
+               value="{{ buscar }}"
+               aria-label="Buscar cita"
+               placeholder="Buscar cliente o motivo">
+
+        <button type="submit" class="buscar-btn">
+            Buscar
+        </button>
+
+        <a href="{% url 'citas' %}"
+           class="boton limpiar">
+            Ver todas
+        </a>
+
+    </form>
+
+    <ol class="agenda">
+
+        {% for cita in citas %}
+
+        <li class="cita">
+
+            <!-- SELLO DE FECHA -->
+            <div class="cita-fecha">
+                <span class="cita-dia">{{ cita.fecha_hora|date:"d" }}</span>
+                <span class="cita-mes">{{ cita.fecha_hora|date:"M" }}</span>
+                <span class="cita-hora">{{ cita.fecha_hora|date:"H:i" }}</span>
+            </div>
+
+            <!-- DETALLE -->
+            <div class="cita-cuerpo">
+
+                <div class="cita-cliente">{{ cita.cliente }}</div>
+                <p class="cita-motivo">{{ cita.motivo }}</p>
+
+                <div class="cita-datos">
+
+                    <span class="etiqueta {% if cita.tipo_reunion == 'Virtual' %}virtual{% else %}presencial{% endif %}">
+                        {{ cita.tipo_reunion }}
+                    </span>
+
+                    {% if cita.tipo_reunion == 'Virtual' %}
+
+                        {% if cita.enlace_virtual %}
+                            <a href="{{ cita.enlace_virtual }}"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                Abrir reunión
+                            </a>
+                        {% else %}
+                            <span>Sin enlace</span>
+                        {% endif %}
+
+                    {% else %}
+
+                        <span>{{ cita.direccion|default:"Sin dirección" }}</span>
+
+                    {% endif %}
+
+                    {% if cita.referencia %}
+                        <span>Ref.: {{ cita.referencia }}</span>
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            <!-- ACCIONES -->
+            <div class="acciones">
+
+                <!-- EDITAR -->
+                <a href="{% url 'citas' %}?editar={{ cita.id_cita }}"
+                   class="boton editar">
+                    Editar
+                </a>
+
+                <!-- ELIMINAR -->
+                <form method="post"
+                      class="form-eliminar"
+                      action="{% url 'eliminar_cita' cita.id_cita %}">
+
+                    {% csrf_token %}
+
+                    <button type="submit"
+                            class="eliminar">
+                        Eliminar
+                    </button>
+
+                </form>
+
+            </div>
+
+        </li>
+
+        {% empty %}
+
+        <li class="vacio">
+            Aún no hay citas. Agenda la primera con el formulario.
+        </li>
+
+        {% endfor %}
+
+    </ol>
+
+</section>
+
+</div>
+
+{% endblock %}

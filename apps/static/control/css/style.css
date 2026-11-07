@@ -1,0 +1,841 @@
+/* =========================================================
+   AGENDA SIMPLE
+   Tipografía: Bricolage Grotesque (títulos) + Figtree (texto)
+   ========================================================= */
+
+:root {
+    --tinta: #1D1840;
+    --tinta-2: #2D2766;
+    --papel: #F4F3F9;
+    --tarjeta: #FFFFFF;
+    --linea: #E3E0EF;
+    --texto: #2A2644;
+    --suave: #6C6888;
+
+    --violeta: #5B3FD6;
+    --violeta-oscuro: #4A31B8;
+    --violeta-claro: #ECE8FF;
+
+    --menta: #D3F1E2;
+    --menta-tinta: #14573A;
+    --rosa: #FCE1E8;
+    --rosa-tinta: #A0214A;
+    --cielo: #DCEBFF;
+    --cielo-tinta: #1F4E8C;
+
+    --fuente-titulo: "Bricolage Grotesque", "Trebuchet MS", sans-serif;
+    --fuente-texto: "Figtree", "Segoe UI", Arial, sans-serif;
+
+    --radio: 14px;
+    --radio-campo: 9px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 248px minmax(0, 1fr);
+    min-height: 100vh;
+    font-family: var(--fuente-texto);
+    font-size: 16px;
+    line-height: 1.55;
+    background: var(--papel);
+    color: var(--texto);
+}
+
+body.sin-menu {
+    display: block;
+}
+
+h1, h2, h3 {
+    font-family: var(--fuente-titulo);
+    color: var(--tinta);
+    line-height: 1.1;
+    margin: 0;
+}
+
+a {
+    color: var(--violeta);
+}
+
+:focus-visible {
+    outline: 3px solid var(--violeta);
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   BARRA LATERAL
+   ========================================================= */
+
+.lateral {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding: 28px 18px;
+    background: var(--tinta);
+    color: #CFCBEA;
+}
+
+.marca {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 8px;
+    font-family: var(--fuente-titulo);
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+    text-decoration: none;
+}
+
+.sello {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 11px;
+    background: var(--violeta);
+    font-size: 20px;
+    line-height: 1;
+}
+
+.lateral nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.lateral nav a {
+    padding: 11px 14px;
+    border-radius: 11px;
+    color: #CFCBEA;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background .15s, color .15s;
+}
+
+.lateral nav a:hover {
+    background: var(--tinta-2);
+    color: #fff;
+}
+
+.lateral nav a[aria-current="page"] {
+    background: #fff;
+    color: var(--tinta);
+    font-weight: 600;
+}
+
+.usuario {
+    margin-top: auto;
+    padding: 14px 8px 0;
+    border-top: 1px solid var(--tinta-2);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.usuario span {
+    color: #fff;
+    font-weight: 600;
+}
+
+.usuario form {
+    margin: 0;
+}
+
+.enlace {
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: 0;
+    color: #CFCBEA;
+    font: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+}
+
+.enlace:hover {
+    color: #fff;
+    filter: none;
+}
+
+
+/* Sin sesión: barra superior simple */
+
+body.sin-menu .lateral {
+    position: static;
+    height: auto;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 28px;
+}
+
+body.sin-menu .lateral nav {
+    flex-direction: row;
+}
+
+
+/* =========================================================
+   CONTENIDO
+   ========================================================= */
+
+.contenido {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 40px 44px 0;
+}
+
+main {
+    flex: 1;
+    width: 100%;
+    max-width: 1180px;
+}
+
+.titulo {
+    font-size: clamp(30px, 4vw, 42px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.subtitulo {
+    margin: 8px 0 28px;
+    color: var(--suave);
+    max-width: 60ch;
+}
+
+.aviso {
+    margin-bottom: 22px;
+    padding: 13px 16px;
+    border-radius: var(--radio-campo);
+    background: var(--menta);
+    color: var(--menta-tinta);
+    font-weight: 500;
+}
+
+.aviso.error {
+    background: var(--rosa);
+    color: var(--rosa-tinta);
+}
+
+
+/* Formulario + lista lado a lado en pantallas anchas */
+
+.division {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+}
+
+@media (min-width: 1320px) {
+    .division {
+        grid-template-columns: 370px minmax(0, 1fr);
+    }
+
+    .division .formulario {
+        position: sticky;
+        top: 24px;
+    }
+}
+
+
+/* =========================================================
+   TARJETAS
+   ========================================================= */
+
+.tarjeta {
+    margin-bottom: 24px;
+    padding: 26px;
+    background: var(--tarjeta);
+    border: 1px solid var(--linea);
+    border-radius: var(--radio);
+}
+
+.division .tarjeta {
+    margin-bottom: 0;
+}
+
+.tarjeta h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+.cabecera-lista {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.cabecera-lista h2 {
+    margin: 0;
+}
+
+.cantidad {
+    color: var(--suave);
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   FORMULARIOS
+   ========================================================= */
+
+.rejilla {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 14px;
+}
+
+.rejilla .ancho {
+    grid-column: 1 / -1;
+}
+
+.campo {
+    min-width: 0;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--tinta);
+}
+
+input,
+select,
+textarea {
+    display: block;
+    width: 100%;
+    padding: 11px 12px;
+    background: #fff;
+    color: var(--texto);
+    border: 1.5px solid var(--linea);
+    border-radius: var(--radio-campo);
+    font: inherit;
+    transition: border-color .15s, box-shadow .15s;
+}
+
+input:hover,
+select:hover {
+    border-color: #C9C3E4;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--violeta);
+    box-shadow: 0 0 0 3px var(--violeta-claro);
+}
+
+::placeholder {
+    color: #9C98B4;
+}
+
+.errorlist {
+    color: var(--rosa-tinta);
+}
+
+.botones {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+
+/* =========================================================
+   BOTONES
+   ========================================================= */
+
+button,
+.boton {
+    display: inline-block;
+    padding: 10px 16px;
+    border: none;
+    border-radius: var(--radio-campo);
+    background: var(--violeta-claro);
+    color: var(--violeta-oscuro);
+    font: inherit;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background .15s, filter .15s;
+}
+
+button:hover,
+.boton:hover {
+    filter: brightness(0.95);
+}
+
+.guardar {
+    background: var(--violeta);
+    color: #fff;
+}
+
+.guardar:hover {
+    background: var(--violeta-oscuro);
+    filter: none;
+}
+
+.limpiar {
+    background: transparent;
+    color: var(--suave);
+    box-shadow: inset 0 0 0 1.5px var(--linea);
+}
+
+.editar {
+    background: var(--cielo);
+    color: var(--cielo-tinta);
+}
+
+.eliminar {
+    background: var(--rosa);
+    color: var(--rosa-tinta);
+}
+
+.buscar-btn {
+    background: var(--violeta-claro);
+    color: var(--violeta-oscuro);
+}
+
+
+/* =========================================================
+   BUSCADOR
+   ========================================================= */
+
+.buscar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.buscar input {
+    flex: 1;
+    min-width: 200px;
+}
+
+
+/* =========================================================
+   AGENDA DE CITAS (lista)
+   ========================================================= */
+
+.agenda {
+    list-style: none;
+    margin: 18px 0 0;
+    padding: 0;
+}
+
+.cita {
+    display: grid;
+    grid-template-columns: 76px minmax(0, 1fr) auto;
+    gap: 18px;
+    align-items: center;
+    padding: 18px 0;
+    border-top: 1px solid var(--linea);
+}
+
+.cita-fecha {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 9px 0 8px;
+    border-radius: 13px;
+    background: var(--violeta-claro);
+    color: var(--violeta-oscuro);
+    text-align: center;
+}
+
+.cita-dia {
+    font-family: var(--fuente-titulo);
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.cita-mes {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.cita-hora {
+    margin-top: 5px;
+    padding-top: 5px;
+    width: 70%;
+    border-top: 1px solid rgba(91, 63, 214, .25);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.cita-cuerpo {
+    min-width: 0;
+}
+
+.cita-cliente {
+    font-family: var(--fuente-titulo);
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--tinta);
+}
+
+.cita-motivo {
+    margin: 2px 0 8px;
+    color: var(--texto);
+}
+
+.cita-datos {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 14px;
+    font-size: 14px;
+    color: var(--suave);
+    overflow-wrap: anywhere;
+}
+
+.etiqueta {
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.etiqueta.virtual {
+    background: var(--cielo);
+    color: var(--cielo-tinta);
+}
+
+.etiqueta.presencial {
+    background: var(--menta);
+    color: var(--menta-tinta);
+}
+
+.acciones {
+    display: flex;
+    gap: 6px;
+}
+
+.form-eliminar {
+    margin: 0;
+}
+
+.vacio {
+    margin: 18px 0 0;
+    padding: 34px 20px;
+    border: 1.5px dashed var(--linea);
+    border-radius: var(--radio);
+    text-align: center;
+    color: var(--suave);
+}
+
+
+/* =========================================================
+   TABLA DE CLIENTES
+   ========================================================= */
+
+.tabla-contenedor {
+    overflow-x: auto;
+    margin-top: 14px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 13px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--linea);
+    vertical-align: middle;
+}
+
+th {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--suave);
+    white-space: nowrap;
+}
+
+td.num {
+    font-variant-numeric: tabular-nums;
+}
+
+.persona {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 210px;
+}
+
+.inicial {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--violeta-claro);
+    color: var(--violeta-oscuro);
+    font-family: var(--fuente-titulo);
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.persona strong {
+    display: block;
+    color: var(--tinta);
+}
+
+.persona small {
+    color: var(--suave);
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   INICIO
+   ========================================================= */
+
+.portada {
+    margin: 8px 0 40px;
+}
+
+.portada h1 {
+    font-size: clamp(38px, 7vw, 76px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    text-transform: capitalize;
+}
+
+.portada p {
+    margin: 14px 0 0;
+    font-size: 19px;
+    max-width: 46ch;
+}
+
+.atajos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.atajo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 26px;
+    border-radius: var(--radio);
+    background: var(--tarjeta);
+    border: 1px solid var(--linea);
+    color: var(--texto);
+    text-decoration: none;
+    transition: border-color .15s, transform .15s;
+}
+
+.atajo:hover {
+    border-color: var(--violeta);
+}
+
+.atajo h2 {
+    font-size: 24px;
+}
+
+.atajo .total {
+    font-family: var(--fuente-titulo);
+    font-size: 56px;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--violeta);
+}
+
+.atajo .accion {
+    margin-top: 10px;
+    font-weight: 600;
+    color: var(--violeta-oscuro);
+}
+
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+.login {
+    max-width: 420px;
+    margin: 40px auto;
+}
+
+body.sin-menu .contenido main {
+    margin-inline: auto;
+}
+
+.login h2 {
+    font-size: 28px;
+    margin-bottom: 6px;
+}
+
+.login .ayuda {
+    margin: 0 0 22px;
+    color: var(--suave);
+}
+
+.login form {
+    display: grid;
+    gap: 16px;
+}
+
+.login .guardar {
+    width: 100%;
+    padding: 12px;
+}
+
+.error {
+    margin: 0 0 16px;
+    padding: 12px 14px;
+    border-radius: var(--radio-campo);
+    background: var(--rosa);
+    color: var(--rosa-tinta);
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   PIE
+   ========================================================= */
+
+footer {
+    margin-top: 40px;
+    padding: 22px 0 28px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px 24px;
+    border-top: 1px solid var(--linea);
+    font-size: 14px;
+    color: var(--suave);
+}
+
+.redes {
+    display: flex;
+    gap: 18px;
+}
+
+
+/* =========================================================
+   TABLET Y CELULAR
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    body {
+        display: block;
+    }
+
+    .lateral {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        height: auto;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px 16px;
+        padding: 12px 16px;
+    }
+
+    .marca {
+        padding: 0;
+        font-size: 20px;
+    }
+
+    .sello {
+        width: 30px;
+        height: 30px;
+        font-size: 17px;
+    }
+
+    .lateral nav {
+        order: 3;
+        width: 100%;
+        flex-direction: row;
+        overflow-x: auto;
+    }
+
+    .lateral nav a {
+        padding: 8px 14px;
+        white-space: nowrap;
+    }
+
+    .usuario {
+        margin-top: 0;
+        padding: 0;
+        border-top: none;
+        flex-direction: row;
+        align-items: center;
+        gap: 14px;
+    }
+
+    body.sin-menu .lateral nav {
+        order: 0;
+        width: auto;
+    }
+
+    .contenido {
+        padding: 24px 16px 0;
+        min-height: 0;
+    }
+}
+
+@media (max-width: 650px) {
+
+    .tarjeta {
+        padding: 18px;
+    }
+
+    .rejilla {
+        grid-template-columns: 1fr;
+    }
+
+    .atajos {
+        grid-template-columns: 1fr;
+    }
+
+    .cita {
+        grid-template-columns: 68px minmax(0, 1fr);
+        gap: 14px;
+    }
+
+    .cita .acciones {
+        grid-column: 1 / -1;
+    }
+
+    .acciones {
+        flex-wrap: wrap;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    * {
+        transition: none !important;
+    }
+}
